@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="a8d3277d-0733-4c3f-aa16-04afdd149e26" >
+		<file:connection workingDir="C:\Users\NSURYAKA\Desktop\test" />
+	</file:config>
+	<flow name="assignment2Flow" doc:id="39c81d6f-83b6-48e6-9a6d-fe891a9e7286" >
+		<file:listener doc:name="On New or Updated File" doc:id="3f4ef1ea-f2c8-437c-b31e-8423d79a4aed" config-ref="File_Config" directory="C:\Users\NSURYAKA\Desktop\test\input">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="98a7bfbe-778c-473a-957d-c6b810a4b0a5" message='#["JSON message transforming now"]'/>
+		<ee:transform doc:name="Transform Message" doc:id="620ff8de-6452-4bbc-a886-1119d24b57b3">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	"hello" : payload
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="9898c4a3-6f17-483a-a6df-87a117f67777" message='#["JSON message transformed into XML"]'/>
+		<file:write doc:name="Write" doc:id="3e42cda1-76cb-4d4a-b204-e83197addb0a" config-ref="File_Config" path="output\abc.xml"/>
+	</flow>
+</mule>
