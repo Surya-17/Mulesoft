@@ -1,0 +1,20 @@
+#%RAML 1.0
+title: 1.	Employee-SAPI 
+
+description: 
+
+/employee:
+  /{employeeName}:
+    get:
+      description: GET will retrieve data from Excel sheet (SELECT operation) - employee.xlsx
+      responses:
+        200:
+      body:
+        application/json:
+       
+        
+  post:
+      description: POST will push data to this excel (INSERT operation) - employee.xlsx
+      body:
+        application/json:
+     
